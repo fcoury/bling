@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+gem 'bling'
+require 'bling'
+
+bling_file = "bling.yml"
+
+task = <<-rakefile
+require 'rubygems'
+gem 'bling'
+require 'bling'
+
+namespace :bling do
+  desc 'shows gems that are required for the given env'
+  task :show do
+		file = File.join(File.dirname(__FILE__), "..", "..", "bling.yml")
+		Prowler.new(file).list_gems(ENV['RAILS_ENV'])
+  end
+
+end
+rakefile
+
+yaml = <<-yml
+all:
+  - name: rails
+    version: 3.0.0.beta
+yml
+
+boot = <<-bootfile
+begin
+  require 'rubygems'
+  gem 'bling'
+  require 'bling'
+end
+bootfile
+
+final = <<-output
+	You still need to do one thing before you're PROWLING, BABY!
+
+	You need to change the line in your application.rb from:
+
+		Bundler.require :default, Rails.env
+
+	to
+		
+		Prowler.new(File.join(File.dirname(__FILE__), "..", "bling.yml")).require_env(Rails.env)
+output
+
+if ARGV[0] == "install"
+	install
+elsif ARGV[0] == "init"
+	init
+else
+	puts "Unrecognized command. Available command: install"
+end
+
+def init
+	if !File.exists?("config/boot.rb")
+		puts "Needs to be run from Rails root directory"
+		exit(1)
+	end
+	
+	File.open("lib/tasks/bling.rake", "w") do |f|
+		f.write(task)
+	end
+	
+	File.open("config/boot.rb", "w") do |f|
+		f.write(boot)
+	end
+	
+	File.open("bling.yml", "w") do |f|
+		f.write(yaml)
+	end
+	
+	puts final
+end
+
+def install
+	if !File.exists?(bling_file)
+		puts "No bling file found"
+		exit(1)
+	end
+
+	Bling.new(bling_file).install_gems(ENV['RAILS_ENV'] || "development")
+end
