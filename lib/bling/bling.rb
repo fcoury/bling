@@ -47,4 +47,18 @@ class Bling
 	end
 end
 
+def gem_version
+  if ENV.include?('RAILS_GEM_VERSION')
+    ENV['RAILS_GEM_VERSION']
+  else
+    parse_gem_version(read_environment_rb)
+  end
+end
 
+def parse_gem_version(text)
+  $1 if text =~ /^[^#]*RAILS_GEM_VERSION\s*=\s*["']([!~<>=]*\s*[\d.]+)["']/
+end
+
+def read_environment_rb
+  File.read("config/environment.rb")
+end
