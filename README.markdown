@@ -1,4 +1,4 @@
-Prowl
+Bling
 =====
 
 I think Bundler is going to do a lot for gem management, but right now 
@@ -7,23 +7,23 @@ playing with other Rails projects. As such, I've written this easy peasy
 gem manager that will:
 
 * Let you group gem dependencies by RAILS_ENV (see YAML below)
-* Show you what gems are needed for a given RAILS_ENV (rake prowl:show)
-* Try to install those gems (rake prowl:install)
+* Show you what gems are needed for a given RAILS_ENV (rake bling:show)
+* Try to install those gems (bling install)
 
 Installation
 ------------
 
-You'll need to install the prowl gem, and then from your Rails root
-directory, just type `prowlify`. There's one manual step you have to take,
-and then you get to fill out your prowl.yml to explain your gem dependencies.
+You'll need to install the bling gem, and then from your Rails root
+directory, just type `bling init`. There's one manual step you have to take,
+and then you get to fill out your bling.yml to explain your gem dependencies.
 
-Once you have your yaml filled out, you can type `prowl install` and it
+Once you have your yaml filled out, you can type `bling install` and it
 should install the gems you need.
 
 YAML
 ----
 
-When you run prowl, you'll get a stock YAML file in your config directory
+When you run bling, you'll get a stock YAML file in your config directory
 that just has the Rails gem (currently 3.0.0.beta). If you want to add
 more gems, just add them either to the all section (meaning they will be
 required for every environment), or to a specifically named section, like
